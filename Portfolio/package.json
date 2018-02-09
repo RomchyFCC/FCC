@@ -1,0 +1,15 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "portfolio page",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "browser-sync start --server --files '*.css, *.html, *.js'"
+  },
+  "author": "Roman Struna",
+  "license": "ISC",
+  "dependencies": {
+    "browser-sync": "^2.23.6"
+  }
+}
