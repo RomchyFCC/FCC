@@ -12,3 +12,17 @@ I made a mock up of what a portfolio could look like, it's not on a professional
 it was a fun project
 
 ---
+
+## Random Quote Generator
+
+Quick set up. Some styles. Nothing fancy.
+
+NEXT!
+
+---
+
+## Weather app
+
+I have barely started and I am already enjoying this project so much!
+
+---

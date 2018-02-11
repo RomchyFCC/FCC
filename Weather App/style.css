@@ -1,0 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 960px;
+  width: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding: 0;
+}
