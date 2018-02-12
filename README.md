@@ -1,11 +1,11 @@
 # FCC Projects
 
 Projects for freeCodeCamp will not be hosted on github pages, instead, I will leave them in my codepen.
-Link to my codepen: https://codepen.io/dashboard/
+Link to my [codepen](https://codepen.io/dashboard/)
 
 ---
 
-## Portfolio 
+## [Portfolio](https://codepen.io/Romchy/pen/aqpxzW)
 
 I made a mock up of what a portfolio could look like, it's not on a professional level but more of a stepping stone to great design...perhaps
 
@@ -13,7 +13,7 @@ it was a fun project
 
 ---
 
-## Random Quote Generator
+## [Random Quote Generator] (https://codepen.io/Romchy/pen/NyjpEK)
 
 Quick set up. Some styles. Nothing fancy.
 
@@ -21,8 +21,10 @@ NEXT!
 
 ---
 
-## Weather app
+## [Weather app] (https://codepen.io/Romchy/pen/RQVdvV)
 
-I have barely started and I am already enjoying this project so much!
+~~I have barely started and I am already enjoying this project so much!~~
+
+Very fun project, short and sweet :)
 
 ---

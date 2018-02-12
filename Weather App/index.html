@@ -5,14 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>Weather App</title>
 </head>
 <body>
   <div class="wrapper">
-    <p>some text</p>
-    <div id="weather">
+    <div class='location'></div>
+    <div class='info'>
+      <div class='weather-info'>
+        <img class='icon' src="">
+        <span class='weather'></span>
+      </div>
+      <div class='windInfo'>
+        <span>Wind</span>
+        <span class='wind'></span>
+        <span>km/h</span>
+      </div>
     </div>
-    <div class=".location"></div>
+    <div class='temp-info'>
+      <i class="fa fa-thermometer-empty" aria-hidden="true"> <span class='temp'></span> <span class='cels'>°C </span>/<button id='fahr'> °F</button></i>
+      <span>Humidity: <span class='humidity'></span> %</span>
+    </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="./script.js"></script>
