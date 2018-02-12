@@ -13,7 +13,7 @@ it was a fun project
 
 ---
 
-## [Random Quote Generator] (https://codepen.io/Romchy/pen/NyjpEK)
+## [Random Quote Generator](https://codepen.io/Romchy/pen/NyjpEK)
 
 Quick set up. Some styles. Nothing fancy.
 
@@ -21,10 +21,16 @@ NEXT!
 
 ---
 
-## [Weather app] (https://codepen.io/Romchy/pen/RQVdvV)
+## [Weather app](https://codepen.io/Romchy/pen/RQVdvV)
 
 ~~I have barely started and I am already enjoying this project so much!~~
 
 Very fun project, short and sweet :)
+
+---
+
+## [Wikpedia viewer](https://codepen.io/Romchy/pen/eVROGE)
+
+Interesting project. Not really that much JS to write.
 
 ---

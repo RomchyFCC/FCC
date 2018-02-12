@@ -1,0 +1,74 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
+  background-image: url('https://i.imgur.com/tAcuCeO.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.image-search {
+  text-align: center;
+  margin-top: 10%;
+  transition: all 0.3s;
+}
+
+div img {
+  border-radius: 35% 35% 200px 200px;
+  cursor: pointer;
+}
+
+.search {
+  text-align: center;
+}
+
+input {
+  width: 600px;
+  height: 35px;
+  font-size: 20px;
+  padding: 5px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.75);
+}
+
+input:focus {
+  background: rgba(255,255,255,1);
+  border: 2px solid blue;
+}
+
+.wrapper {
+  color: black;
+  text-align: center;
+  display: grid;
+  justify-items: center;
+}
+
+.wrapper ul {
+  margin: 0;
+}
+
+.wrapper a {
+  background: rgba(255, 255, 255, 0.7);
+  height: 50px;
+  list-style-type: none;
+  display: block;
+  padding: 14px;
+  width: 600px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: darkmagenta;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.wrapper a:hover {
+  background: rgba(255, 255, 255, 1);
+  border-bottom: 3px solid darkmagenta;
+  text-decoration: underline;
+}
