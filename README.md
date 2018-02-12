@@ -5,19 +5,17 @@ Link to my [codepen](https://codepen.io/dashboard/)
 
 ---
 
-## [Portfolio](https://codepen.io/Romchy/pen/aqpxzW)
+## [Twitch API]()
 
-I made a mock up of what a portfolio could look like, it's not on a professional level but more of a stepping stone to great design...perhaps
-
-it was a fun project
+Using twitch API to display active channels.
+This one gave me some problems because I couldn't display items in order, so working around that was quite tough.
+Even after figuring it out I don't think it works optimally.
 
 ---
 
-## [Random Quote Generator](https://codepen.io/Romchy/pen/NyjpEK)
+## [Wikpedia viewer](https://codepen.io/Romchy/pen/eVROGE)
 
-Quick set up. Some styles. Nothing fancy.
-
-NEXT!
+Interesting project. Not really that much JS to write.
 
 ---
 
@@ -29,8 +27,19 @@ Very fun project, short and sweet :)
 
 ---
 
-## [Wikpedia viewer](https://codepen.io/Romchy/pen/eVROGE)
 
-Interesting project. Not really that much JS to write.
+## [Random Quote Generator](https://codepen.io/Romchy/pen/NyjpEK)
+
+Quick set up. Some styles. Nothing fancy.
+
+NEXT!
+
+---
+
+## [Portfolio](https://codepen.io/Romchy/pen/aqpxzW)
+
+I made a mock up of what a portfolio could look like, it's not on a professional level but more of a stepping stone to great design...perhaps
+
+it was a fun project
 
 ---

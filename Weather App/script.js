@@ -17,7 +17,7 @@ function getWeather(lat, long){
     icon.attr('src', data.weather[0].icon);
     geoLocation.text(data.name);
     humidity.text(data.main.humidity);
-    temp.text(data.main.temp);
+    temp.text(Math.round(data.main.temp));
     wind.text(data.wind.speed);
     weather.text(data.weather[0].main);
 
