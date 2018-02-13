@@ -5,11 +5,12 @@ Link to my [codepen](https://codepen.io/dashboard/)
 
 ---
 
-## [Twitch API]()
+## [Twitch API](https://codepen.io/Romchy/pen/vdZwJQ)
 
 Using twitch API to display active channels.
 This one gave me some problems because I couldn't display items in order, so working around that was quite tough.
 Even after figuring it out I don't think it works optimally.
+It's hard to know where I get all the inconsistency, it must be the API which probably can't handle too many requests, unfortunately I can't lower them.
 
 ---
 
