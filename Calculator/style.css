@@ -1,0 +1,35 @@
+* {
+  box-sizing: border-box;
+}
+
+table {
+  background: lightgray;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 30px 5px black;
+}
+button {
+  font-size: 200%;
+	width: 60px;
+}
+
+
+
+input {
+	font-size: 20px;
+	height: 40px;
+  text-align: right;
+  width: 100%;
+}
+
+#clearButton {
+  background: red;
+}
+
+button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+#clearButton:hover{
+  background: rgba(255, 0, 0, 0.5);
+}

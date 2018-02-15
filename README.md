@@ -5,6 +5,18 @@ Link to my [codepen](https://codepen.io/dashboard/)
 
 ---
 
+## [Pomodoro Clock]()
+
+Seems simple enough, I'm not really taking it serious, gonna prolly bite me in the ass.
+
+---
+
+## [Calculator](https://codepen.io/Romchy/pen/jZGXOG)
+
+Complicated.
+
+---
+
 ## [Twitch API](https://codepen.io/Romchy/pen/vdZwJQ)
 
 Using twitch API to display active channels.
