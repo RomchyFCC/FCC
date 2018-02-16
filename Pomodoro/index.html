@@ -4,11 +4,31 @@
     <title>Pomodoro Clock</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
-    <input id="time" type="text" name="timeInput" placeholder="25">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <div class="wrapper">
+      <div class="break">
+        <h2 class="header">Break Time</h2>
+        <i class="fa fa-minus-square-o" aria-hidden="true"></i>
+        <input id="breakTime" type="text" placeholder="5" disabled>
+        <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+      </div>
+      <div class="custom-time">
+        <div id="display">
+          <div id="name"></div>
+          <div id="displayTime"></div>
+          <audio id="audio" src="./sound/Roost.mp3"></audio>
+        </div>
+      </div>
+      <div class="pomodoro">
+        <h2 class="header">Session Time</h2>
+        <i class="fa fa-minus-square-o" aria-hidden="true"></i>
+        <input id="mainTime" type="text" placeholder="25" disabled>
+        <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+      </div>
+    </div>
     <script src="./script.js" rel="javascript"></script>
   </body>
 </html>

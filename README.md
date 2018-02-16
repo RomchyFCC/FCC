@@ -1,23 +1,32 @@
 # FCC Projects
 
 Projects for freeCodeCamp will not be hosted on github pages, instead, I will leave them in my codepen.
-Link to my [codepen](https://codepen.io/dashboard/)
+Link to my [codepen](https://codepen.io/Romchy/)
 
 ---
 
-## [Pomodoro Clock]()
+## [Tic-Tac-Toe]()
+
+A simple tic tac toe game.
+In development.
+
+---
+
+## [Pomodoro Clock](https://codepen.io/Romchy/full/eVexxp/)
 
 Seems simple enough, I'm not really taking it serious, gonna prolly bite me in the ass.
+Nope, I took it seriously in the end, was quite a fun project.
+I even took the time to make it responsive.
 
 ---
 
-## [Calculator](https://codepen.io/Romchy/pen/jZGXOG)
+## [Calculator](https://codepen.io/Romchy/full/jZGXOG/)
 
 Complicated.
 
 ---
 
-## [Twitch API](https://codepen.io/Romchy/pen/vdZwJQ)
+## [Twitch API](https://codepen.io/Romchy/full/vdZwJQ/)
 
 Using twitch API to display active channels.
 This one gave me some problems because I couldn't display items in order, so working around that was quite tough.
@@ -26,13 +35,13 @@ It's hard to know where I get all the inconsistency, it must be the API which pr
 
 ---
 
-## [Wikpedia viewer](https://codepen.io/Romchy/pen/eVROGE)
+## [Wikpedia viewer](https://codepen.io/Romchy/full/eVROGE)
 
 Interesting project. Not really that much JS to write.
 
 ---
 
-## [Weather app](https://codepen.io/Romchy/pen/RQVdvV)
+## [Weather app](https://codepen.io/Romchy/full/RQVdvV)
 
 ~~I have barely started and I am already enjoying this project so much!~~
 
@@ -41,7 +50,7 @@ Very fun project, short and sweet :)
 ---
 
 
-## [Random Quote Generator](https://codepen.io/Romchy/pen/NyjpEK)
+## [Random Quote Generator](https://codepen.io/Romchy/full/NyjpEK)
 
 Quick set up. Some styles. Nothing fancy.
 
@@ -49,7 +58,7 @@ NEXT!
 
 ---
 
-## [Portfolio](https://codepen.io/Romchy/pen/aqpxzW)
+## [Portfolio](https://codepen.io/Romchy/full/aqpxzW)
 
 I made a mock up of what a portfolio could look like, it's not on a professional level but more of a stepping stone to great design...perhaps
 
