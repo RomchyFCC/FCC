@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 1px solid black;
+}
+
+.wrapper {
+  margin: 250px auto;
+  text-align: center;
+  height: 50vh;
+  width: 320px;
+}
+
+.board {
+  height: 320px;
+  width: 320px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 5px;
+  justify-items: center;
+}
+
+
+.number {
+  width: 100px;
+  height: 100px;
+  background: gray;
+
+}
