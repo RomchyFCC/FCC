@@ -1,39 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="./style.css">
-  <title>Tic Tac Toe</title>
-</head>
-<body>
-  <div class="wrapper">
-    <div class="board">
-      <div id="1" class="number"></div>
-      <div id="2" class="number"></div>
-      <div id="3" class="number"></div>
-      <div id="4" class="number"></div>
-      <div id="5" class="number"></div>
-      <div id="6" class="number"></div>
-      <div id="7" class="number"></div>
-      <div id="8" class="number"></div>
-      <div id="9" class="number"></div>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style.css">
+    <title>Tic Tac Toe</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="board">
+        <div id="1" class="number"><i class="fa fa-5x" aria-hidden="true"></i></div>
+        <div id="2" class="number"><i class="fa fa-5x" aria-hidden="true"></i></div>
+        <div id="3" class="number"><i class="fa fa-5x" aria-hidden="true"></i></div>
+        <div id="4" class="number"><i class="fa fa-5x" aria-hidden="true"></i></div>
+        <div id="5" class="number"><i class="fa fa-5x" aria-hidden="true"></i></div>
+        <div id="6" class="number"><i class="fa fa-5x" aria-hidden="true"></i></div>
+        <div id="7" class="number"><i class="fa fa-5x" aria-hidden="true"></i></div>
+        <div id="8" class="number"><i class="fa fa-5x" aria-hidden="true"></i></div>
+        <div id="9" class="number"><i class="fa fa-5x" aria-hidden="true"></i></div>
+      </div>
+      <div class="cover">
+        <p>What would you like to play with?</p>
+        <span class="pick"><i id="o" class="fa fa-circle-o fa-3x" aria-hidden="true"></i><i id="x" class="fa fa-times fa-3x" aria-hidden="true"></i></span>
+      </div>
+      <div class="end">
+        <p class="text"></p>
+        <button class="reset" onClick="gameReset()">Reset</button>
+      </div>
     </div>
-    <div class="cover">
-      <p>What would you like to play with?</p>
-      <span><i class="fa fa-circle-o fa-4x" aria-hidden="true"></i> OR <i class="fa fa-times fa-4x"></i></span>
-    </div>
-  </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="./script.js"></script>
-</body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
 </html>
-<!--
-  User Story: I can play a game of Tic Tac Toe with the computer.
-
-User Story: My game will reset as soon as it's over so I can play again.
-
-User Story: I can choose whether I want to play as X or O.
--->

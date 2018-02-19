@@ -2,24 +2,34 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border: 1px solid black;
 }
-
+body {
+  background: lightgrey;
+}
+p {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 40px;
+  color: white;
+  font-weight: 900;
+}
 .wrapper {
-  margin: 250px auto;
+  margin: 200px auto;
   text-align: center;
-  height: 50vh;
-  width: 320px;
+  height: 310px;
+  width: 310px;
+  background: rgba(100,100,200,0.7)
 }
 
 .board {
-  height: 320px;
-  width: 320px;
+  height: 310px;
+  width: 310px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
   grid-gap: 5px;
   justify-items: center;
+  background: black;
+  visibility: hidden;
 }
 
 
@@ -27,5 +37,48 @@
   width: 100px;
   height: 100px;
   background: gray;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
 
+.cover {
+  position: relative;
+  top: -250px;
+}
+
+span>i{
+  display: block;
+  cursor: pointer;
+  margin: 15px;
+  padding: 5px;
+  border: 2px solid transparent;
+}
+
+.end {
+  transition: all 0.3s;
+  height: 310px;
+  width: 310px;
+  background: rgba(100,100,200,0.7);
+  position: relative;
+  top: -310px;
+  align-items: center;
+  justify-items: center;
+  display: none;
+}
+span>i:hover{
+  border: 2px dashed black;
+  border-radius: 15px;
+}
+
+button {
+  width: 100px;
+  height: 50px;
+  font-size: 35px;
+  border-radius: 15px;
+  border: none;
+}
+
+button:hover {
+  box-shadow: 0 0 25px 5px blue;
 }
