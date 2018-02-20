@@ -3,12 +3,21 @@
 Projects for freeCodeCamp will not be hosted on github pages, instead, I will leave them in my codepen.
 Link to my [codepen](https://codepen.io/Romchy/)
 
+[Front-End Certificate](https://www.freecodecamp.org/romchyfcc/front-end-certification)
+
 ---
 
-## [Tic-Tac-Toe]()
+## [Simon's Game](https://codepen.io/Romchy/full/ZrxqxM/)
+
+Quite a complex project, playing with timeout's like this was definitely challenging, but at least I learned a lot :)
+
+---
+
+## [Tic-Tac-Toe](https://codepen.io/Romchy/full/RQQEbq/)
 
 A simple tic tac toe game.
-In development.
+~~In development.~~
+Done!....-ish
 
 ---
 

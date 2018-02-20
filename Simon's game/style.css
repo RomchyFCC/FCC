@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: rgba(200,70,50,0.7);
+}
+
+.wrapper {
+  display: grid;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: 300px 300px;
+  grid-template-rows: 300px 300px 0 0 0;
+  padding: 10px;
+  margin: 150px auto;
+  border: 20px solid rgba(50, 50, 50, 0.7);
+  border-radius: 100%;
+  background: rgba(50, 50, 50, 1);
+}
+
+.controls {
+  position: relative;
+  top: -453px;
+  left: -148px;
+  background: rgb(127, 141, 141);
+  width: 300px;
+  height: 300px;
+  border: 20px solid rgba(50, 50, 50, 1);
+  border-radius: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  grid-template-rows: repeat(2, 25px);
+  justify-content: center;
+  align-content: center;
+  grid-gap: 20px;
+}
+
+.section {
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+#one {
+  border-radius: 100% 0 0 0;
+  background: rgba(33, 33, 243, 0.952);
+}
+#two {
+  border-radius: 0 100% 0 0;
+  background: rgba(75, 255, 51, 0.952);
+}
+#three {
+  border-radius: 0 0 0 100%;
+  background: rgba(252, 255, 59, 0.952);
+}
+#four {
+  border-radius: 0 0 100% 0;
+  background: rgba(253, 57, 57, 0.952);
+}
+
+.crossX, .crossY {
+  position: relative;
+  top: -310px;
+  background: rgba(50, 50, 50, 1);
+  width: 620px;
+  height: 30px;
+}
+
+.crossY {
+  left: -310px;
+  transform-origin: 50%;
+  transform: rotateZ(90deg);
+}
+
+.light {
+  position: relative;
+  top: -60px;
+  left: 90px;
+  height: 10px;
+  width: 10px;
+  background: black;
+  border-radius: 100%;
+}
+
+.onOff {
+  width: 200px;
+  height: 50px;
+  display: grid;
+  grid-template-columns: 50px 50px 50px;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.button {
+  background: brown;
+  height: 25px;
+  width: 50px;
+  display: grid;
+  grid-template-columns: 25px 25px;
+  align-items: center;
+  justify-items: center;
+}
+
+.slide {
+  background: white;
+  width: 20px;
+  height: 20px;
+  grid-column: 2/3;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.flash {
+  background: rgba(250, 250, 250, 0.9) !important;
+  box-shadow: 0 0 25px 5px white;
+}
+
+.stopper {
+  position: relative;
+  top: -600px;
+  width: 600px;
+  height: 600px;
+  background: transparent;
+  visibility: visible;
+}
