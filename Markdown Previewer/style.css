@@ -1,0 +1,36 @@
+body {
+  background: linear-gradient(75deg, lightskyblue, lightgreen);
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  height: 100%;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+
+  width: 960px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+textarea, .result {
+  resize: none;
+  height: 90% !important;
+  width: 100% !important;
+  margin: auto 0 !important;
+  border: none;
+  outline: none;
+  padding: 10px;
+  max-height: 800px;
+}
+
+.result {
+  background: #eee;
+}
