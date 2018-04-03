@@ -1,0 +1,61 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  width: 600px;
+  margin: 0 auto;
+  background: #ddd;
+}
+
+table {
+  margin: 0 auto;
+  box-shadow: 0 0 50px 5px black;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+thead {
+  background: rgb(0, 95, 0);
+  color: white;
+}
+
+thead th {
+  padding: 10px;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+tbody tr:nth-child(2n + 1) {
+  background: white;
+}
+
+thead th:nth-child(3), thead th:nth-child(4) {
+  cursor: pointer;
+}
+
+table div {
+  padding: 10px;
+}
+
+a{
+  color: rgb(0, 95, 0);
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+a:hover {
+  color: rgb(76, 0, 95);
+  text-decoration: underline;
+}
+img {
+  vertical-align: middle;
+}
+
+tr td:nth-child(2) {
+  text-align: left;
+}

@@ -21,7 +21,7 @@ class Row extends React.Component {
     return (
       <tr>
         <td>{this.props.id + 1}</td>
-        <td>{this.props.name}</td>
+        <td><div><img src={this.props.img} width="25" height="25"/><a href={`https://www.freecodecamp.org/${this.props.name}`} target="_blank">{this.props.name}</a></div></td>
         <td>{this.props.recentPoints}</td>
         <td>{this.props.allTimePoints}</td>
       </tr>
