@@ -3,8 +3,8 @@ class Recipes extends React.Component {
   render(){
     const recipeNameArray = this.props.recipes;
     return (
-      <ul>
-        {recipeNameArray.map((recipe, id) => <Recipe remove={this.props.remove.bind(this)} onEdit={this.props.onEdit.bind(this)} key={`${recipe.name}${id}`} recipe={recipe} toggleEdit={this.props.toggleEdit.bind(this)}/>)}
+      <ul className="recipes" >
+        {recipeNameArray.map((recipe, id) => <Recipe toggleClass={this.props.toggleClass.bind(this)} remove={this.props.remove.bind(this)} onEdit={this.props.onEdit.bind(this)} key={`${recipe.name}${id}`} recipe={recipe} toggleEdit={this.props.toggleEdit.bind(this)}/>)}
       </ul>
     );
   }
@@ -13,10 +13,10 @@ class Recipes extends React.Component {
 class Recipe extends React.Component {
   render(){
     return (
-      <li>
-        <h3>{this.props.recipe.name}</h3>
+      <li className="recipe" >
+        <h3 onClick={this.props.toggleClass.bind(this)} >{this.props.recipe.name}</h3>
         <ul>
-          {this.props.recipe.ingredients.map(ingredient => <li key={`${this.props.recipe.name}${ingredient}`}>{ingredient}</li>)}
+          {this.props.recipe.ingredients.map((ingredient, id) => <li key={`${this.props.recipe.name}${ingredient}${id}`}>{ingredient}</li>)}
         </ul>
         <button onClick={this.props.remove.bind(this)}>Delete</button>
         <button onClick={this.props.toggleEdit.bind(this)}>Edit</button>
@@ -111,6 +111,15 @@ class App extends React.Component {
     });
   }
 
+  toggleClass(e) {
+    let removeIt;
+    if (e.target.parentNode.classList.contains('showMore')) {
+      removeIt = true;
+    }
+    e.target.parentNode.parentNode.childNodes.forEach(li => li.classList.remove('showMore'));
+    removeIt ? e.target.parentNode.classList.remove('showMore') : e.target.parentNode.classList.add('showMore');
+  }
+
   togglePopup() {
     this.setState({
       showPopup: !this.state.showPopup
@@ -174,10 +183,27 @@ class App extends React.Component {
     })
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    localStorage.setItem('recipeBook', JSON.stringify(this.state.recipes));
+  }
+
+  
+  componentWillMount() {
+    let retrievedObject = localStorage.getItem('recipeBook');
+		if(retrievedObject !== null) {
+      let recipes = JSON.parse(retrievedObject);
+      this.setState({
+        recipes
+      })
+    }
+    
+  }
+  
+  
   render(){
     return (
       <div className="wrapper">
-        <Recipes remove={this.remove.bind(this)} onEdit={this.onEdit.bind(this)} recipes={this.state.recipes} toggleEdit={this.toggleEdit.bind(this)} popup={this.state.showPopup} />
+        <Recipes toggleClass={this.toggleClass.bind(this)} remove={this.remove.bind(this)} onEdit={this.onEdit.bind(this)} recipes={this.state.recipes} toggleEdit={this.toggleEdit.bind(this)} popup={this.state.showPopup} />
         <AddRecipe onAdd={this.onAdd.bind(this)} togglePopup={this.togglePopup.bind(this)} popup={this.state.showPopup} />
       </div>
     );

@@ -2,4 +2,52 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.wrapper {
+  width: 500px;
+  margin: 0 auto;
+  background: gray;
+  box-shadow: 0 0 50px 10px black;
+}
+
+.recipes {
+  background: greenyellow;
+  padding: 10px;
+  display: grid;
+}
+
+.recipe {
+  height: 25px;
+  overflow: hidden;
+  padding: 0 10px;
+}
+
+.recipe.showMore {
+  height: 100%;
+  background: yellow;
+}
+
+button {
+  background: purple;
+  padding: 10px;
+  margin: 10px;
+  margin-left: 0;
+  color: greenyellow;
+  border: none;
+}
+
+.recipe h3, button {
+  cursor: pointer;
+}
+
+.wrapper>div button {
+  margin-left: 10px;
+}
+
+.wrapper>div>div, .recipe>div {
+  display: grid;
+  margin: 10px;
+  grid-gap: 5px;
 }

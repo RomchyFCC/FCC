@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.wrapper {
+  width: 800px;
+  height: 600px;
+  margin: 0 auto;
+  background: #eee;
+  box-shadow: 0 0 50px 5px black;
+}
+
+.display {
+  height: 300px;
+  width: 400px;
+  background: gray;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+.cell {
+  width: 10px;
+  height: 10px;
+  border: 1px solid white;
+}
+
+.dead {
+  background: black;
+}
+
+.alive {
+  background: red;
+}
