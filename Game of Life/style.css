@@ -13,12 +13,20 @@
   box-shadow: 0 0 50px 5px black;
 }
 
+.cellId {
+  visibility: hidden;
+}
 .display {
   height: 300px;
   width: 400px;
   background: gray;
   padding: 10px;
   margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .cell {
