@@ -13,15 +13,31 @@
   box-shadow: 0 0 50px 5px black;
 }
 
-.cellId {
-  visibility: hidden;
+.header {
+  display: grid;
+  justify-content: center;
 }
-.display {
-  height: 300px;
-  width: 400px;
+
+.header p {
+  display: block;
+  justify-self: center;
+}
+
+.header span {
+  font-weight: 900;
+  color: red;
+}
+
+
+.cellId {
+  display: none;
+}
+.grid {
+  height: 320px;
+  width: 520px;
   background: gray;
   padding: 10px;
-  margin: 0 auto;
+  margin: 15px auto;
 }
 
 .row {
@@ -32,7 +48,7 @@
 .cell {
   width: 10px;
   height: 10px;
-  border: 1px solid white;
+  border: 1px solid gray;
 }
 
 .dead {
@@ -40,5 +56,19 @@
 }
 
 .alive {
+  background: red;
+}
+
+button {
+  background: black;
+  border: none;
+  color: red;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  color: black;
   background: red;
 }

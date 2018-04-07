@@ -7,6 +7,30 @@ Link to my [codepen](https://codepen.io/Romchy/)
 
 ---
 
+## [Game of Life](https://codepen.io/Romchy/full/RMqppx/)
+
+Very complex logic behind this game, I learned a lot about passing functions and binding the this keyword in React
+
+---
+
+## [Recipe Box](https://codepen.io/Romchy/full/QmVBYP/)
+
+Very basic layout, logic and react state was the focus of this project and didn't really pay attention to styling.
+
+---
+
+## [Camper Leaderboard](https://codepen.io/Romchy/full/oqyJwJ/)
+
+When creating this project I had a bery poor grasp on state in React, but have since improved in that field, great learning experience.
+
+---
+
+## [Markdown Previewer](https://codepen.io/Romchy/full/XEqzqa/)
+
+Very easy project, the most complex part was figuring out how exactly to use the marked function from the library
+
+---
+
 ## [Simon's Game](https://codepen.io/Romchy/full/ZrxqxM/)
 
 Quite a complex project, playing with timeout's like this was definitely challenging, but at least I learned a lot :)
@@ -17,7 +41,7 @@ Quite a complex project, playing with timeout's like this was definitely challen
 
 A simple tic tac toe game.
 ~~In development.~~
-Done!....-ish
+Done!....-ish (because I didn't use the algorithm but if/else logic and the style was not the focus of the project)
 
 ---
 
