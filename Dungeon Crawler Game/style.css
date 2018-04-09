@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+  height: 100vh;
+  width: 100vw;
+}
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  background: rgb(36, 36, 36);
+  box-shadow: 0 0 50px 5px black;
+}
+
+.header {
+  display: grid;
+  justify-content: center;
+}
+
+.header p {
+  display: block;
+  justify-self: center;
+}
+
+.grid {
+  height: 770px;
+  width: 895px;
+  background: gray;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cell {
+  width: 25px;
+  height: 25px;
+}
+
+.player {
+  background: yellow;
+}
+
+.dead {
+  background: black;
+}
+
+.enemy {
+  background: red;
+}
+
+.health {
+  background: green;
+}
+
+.portal {
+  background: purple;
+}
+
+.boss {
+  background: blue;
+}
+
+.weapon {
+  background: white;
+}
