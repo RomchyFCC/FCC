@@ -7,6 +7,12 @@ Link to my [codepen](https://codepen.io/Romchy/)
 
 ---
 
+## [Rougelike dunegon crawler game](https://codepen.io/Romchy/full/xWBpQx/)
+
+What a mess, it works but I'm not really proud of the product, I didn't keep it DRY.
+
+---
+
 ## [Game of Life](https://codepen.io/Romchy/full/RMqppx/)
 
 Very complex logic behind this game, I learned a lot about passing functions and binding the this keyword in React

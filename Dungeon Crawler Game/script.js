@@ -2,7 +2,7 @@ class Row extends React.Component {
   row() {
     const row = [];
     this.props.rowArr.forEach((cell, j) => {
-      row.push(<Point key={`point${this.props.i}${j}`} i={this.props.i} j={j} >{cell}</Point>);
+      row.push(<Point key={`point${this.props.i}${j}`} i={this.props.i} fog={this.props.fog} j={j} player={this.props.player} >{cell}</Point>);
     });
     return row;
   }
@@ -17,13 +17,18 @@ class Display extends React.Component {
   grid() {
     const grid = [];
     this.props.gridArr.forEach((row, i) => {
-      grid.push(<Row key={`row${i}`} rowArr={row} i={i} />);
+      grid.push(<Row key={`row${i}`} fog={this.props.fog} rowArr={row} i={i} player={this.props.player} />);
     });
     return grid;
   }
+  getFog(fog, x, y) {
+    if (fog) {
+      return {background: `radial-gradient(circle at ${x*2.8}% ${y*3.3}%, rgba(250,250,250,0.3), rgba(0,0,0,1) 20%`};
+    }
+  }
   render() {
     return (
-      <div className="grid">{this.grid()}</div>
+      <div className="grid" style={this.getFog(this.props.fog, this.props.player.x, this.props.player.y)}>{this.grid()}</div>
     );
   }
 }
@@ -61,9 +66,52 @@ class Point extends React.Component {
         break;
     }
   }
+  getFog(fog) {
+    if (fog && !(this.props.i <= this.props.player.y + 3 && this.props.i >= this.props.player.y - 3 && this.props.j <= this.props.player.x + 3 && this.props.j >= this.props.player.x - 3)) {
+      return {background: 'black'}
+    }
+  }
   render() {
     return (
-      <div className={`cell ${this.getClass(this.props.children)}`}></div>
+      <div className={`cell ${this.getClass(this.props.children)}`} style={this.getFog(this.props.fog)} ></div>
+    )
+  }
+}
+
+class Table extends React.Component {
+  render() {
+    let weapon = '';
+    if (this.props.player.attack >= 120) {
+      weapon = 'Bazooka';
+    } else if (this.props.player.attack >= 80) {
+      weapon = 'Shuriken';
+    } else if (this.props.player.attack >= 60) {
+      weapon = 'Katana';
+    } else if (this.props.player.attack >= 30) {
+      weapon = 'Nunchucks';
+    } else if (this.props.player.attack >= 15) {
+      weapon = 'Knuckles';
+    } else if (this.props.player.attack >= 5) {
+      weapon = 'Fists';
+    }
+    return (
+      <div className="table">
+        <div>
+          <p>Health - <span className="cell health"></span></p>
+          <p>Weapon - <span className="cell weapon"></span></p>
+          <p>Enemy - <span className="cell enemy"></span></p>
+          <p>Boss - <span className="cell boss"></span></p>
+          <p>Portal - <span className="cell portal"></span></p>
+          <p>Player - <span className="cell player"></span></p>
+        </div>
+        <div>Health: {this.props.player.health}</div>
+        <div>Weapon: {weapon}</div>
+        <div>Level: {this.props.player.level}</div>
+        <div>XP: {this.props.player.xp}</div>
+        <div>Dungeon: {this.props.level}</div>
+        <div>{(this.props.level === 5) && `Boss: ${this.props.boss.health}`}</div>
+        <div><button onClick={this.props.handleClick}>Fog</button></div>
+      </div>
     )
   }
 }
@@ -89,25 +137,25 @@ class App extends React.Component {
           y: null,
         },
         two: {
-          attack: 10,
+          attack: 9,
           health: 100,
           x: null,
           y: null,
         },
         three: {
-          attack: 10,
+          attack: 8,
           health: 100,
           x: null,
           y: null,
         },
         four: {
-          attack: 10,
+          attack: 7,
           health: 100,
           x: null,
           y: null,
         },
         five: {
-          attack: 10,
+          attack: 6,
           health: 100,
           x: null,
           y: null,
@@ -117,7 +165,8 @@ class App extends React.Component {
       boss: {
         health: 20000,
         attack: 50
-      }
+      },
+      fog: true
     };
   }
 
@@ -264,15 +313,17 @@ class App extends React.Component {
             gridArr: grid,
             player
           });
+          // pick up health left
         } else if (grid[player.y][player.x - 1] === 2) {
           grid[player.y][player.x - 1] = 5;
           grid[player.y][player.x] = 1;
           player.x = player.x - 1;
-          player.health += Math.floor((Math.random() * 15) + 8);
+          player.health += Math.floor((Math.random() * 15) + 5 + level);
           this.setState({
             gridArr: grid,
             player
           });
+          // fight left
         } else if (grid[player.y][player.x - 1] === 3) {
           let enemyNumber = '';
           for (let enemy in enemies) {
@@ -281,7 +332,11 @@ class App extends React.Component {
             }
           }
           enemies[enemyNumber].health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * this.state.level);
+          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * level);
+          this.setState({
+            player,
+            enemies
+          });
           if (enemies[enemyNumber].health <= 0) {
             grid[player.y][player.x - 1] = 5;
             grid[player.y][player.x] = 1;
@@ -296,7 +351,9 @@ class App extends React.Component {
               player,
               enemies
             });
-          } else if (player.health <= 0) {
+          }
+          if (player.health <= 0) {
+            alert('YOU LOST');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -322,6 +379,7 @@ class App extends React.Component {
             });
             this.generateLevel();
           }
+          // go to next level left
         } else if (grid[player.y][player.x - 1] === 4) {
           for (let enemy in enemies) {
             enemies[enemy] = {
@@ -339,6 +397,7 @@ class App extends React.Component {
             gridArr: this.getEmptyGrid()
           });
           this.generateLevel();
+          // pick up weapon left
         } else if (grid[player.y][player.x - 1] === 6) {
           player.attack += 10 * level;
           grid[player.y][player.x - 1] = 5;
@@ -348,11 +407,16 @@ class App extends React.Component {
             gridArr: grid,
             player
           })
+          // fight boss left
         } else if (grid[player.y][player.x - 1] === 7) {
           boss.health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
           player.health -= Math.floor((Math.random() * boss.attack) + 20);
+          this.setState({
+            player,
+            boss
+          });
           if (boss.health <= 0) {
-            alert('you won');
+            alert('YOU WON');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -375,8 +439,9 @@ class App extends React.Component {
               gridArr: this.getEmptyGrid()
             });
             this.generateLevel();
-          } else if (player.health <= 0) {
-            alert('you lost');
+          }
+          if (player.health <= 0) {
+            alert('YOU LOST');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -385,12 +450,12 @@ class App extends React.Component {
                 y: null,
               }
             }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+            player.x = null;
+            player.y = null;
+            player.health = 100;
+            player.attack = 5;
+            player.xp = 0;
+            player.level = 1;
             boss.health = 20000;
 
             this.setState({
@@ -418,7 +483,7 @@ class App extends React.Component {
           grid[player.y - 1][player.x] = 5;
           grid[player.y][player.x] = 1;
           player.y = player.y - 1;
-          player.health += Math.floor((Math.random() * 15) + 8);
+          player.health += Math.floor((Math.random() * 15) + 5 + level);
           this.setState({
             gridArr: grid,
             player: player
@@ -431,7 +496,11 @@ class App extends React.Component {
             }
           }
           enemies[enemyNumber].health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * this.state.level);
+          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * level);
+          this.setState({
+            player,
+            enemies
+          });
           if (enemies[enemyNumber].health <= 0) {
             grid[player.y - 1][player.x] = 5;
             grid[player.y][player.x] = 1;
@@ -446,7 +515,9 @@ class App extends React.Component {
               player,
               enemies
             });
-          } else if (player.health <= 0) {
+          }
+          if (player.health <= 0) {
+            alert('YOU LOST');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -455,12 +526,12 @@ class App extends React.Component {
                 y: null,
               }
             }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+            player.x = null;
+            player.y = null;
+            player.health = 100;
+            player.attack = 5;
+            player.xp = 0;
+            player.level = 1;
             boss.health = 20000;
 
             this.setState({
@@ -501,8 +572,12 @@ class App extends React.Component {
         } else if (grid[player.y - 1][player.x] === 7) {
           boss.health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
           player.health -= Math.floor((Math.random() * boss.attack) + 20);
+          this.setState({
+            player,
+            boss
+          });
           if (boss.health <= 0) {
-            alert('you won');
+            alert('YOU WON');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -525,8 +600,9 @@ class App extends React.Component {
               gridArr: this.getEmptyGrid()
             });
             this.generateLevel();
-          } else if (player.health <= 0) {
-            alert('you lost');
+          }
+          if (player.health <= 0) {
+            alert('YOU LOST');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -535,12 +611,12 @@ class App extends React.Component {
                 y: null,
               }
             }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+            player.x = null;
+            player.y = null;
+            player.health = 100;
+            player.attack = 5;
+            player.xp = 0;
+            player.level = 1;
             boss.health = 20000;
 
             this.setState({
@@ -568,7 +644,7 @@ class App extends React.Component {
           grid[player.y][player.x + 1] = 5;
           grid[player.y][player.x] = 1;
           player.x = player.x + 1;
-          player.health += Math.floor((Math.random() * 15) + 8);
+          player.health += Math.floor((Math.random() * 15) + 5 + level);
           this.setState({
             gridArr: grid,
             player: player
@@ -581,7 +657,11 @@ class App extends React.Component {
             }
           }
           enemies[enemyNumber].health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * this.state.level);
+          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * level);
+          this.setState({
+            player,
+            enemies
+          });
           if (enemies[enemyNumber].health <= 0) {
             grid[player.y][player.x + 1] = 5;
             grid[player.y][player.x] = 1;
@@ -596,7 +676,9 @@ class App extends React.Component {
               player,
               enemies
             });
-          } else if (player.health <= 0) {
+          }
+          if (player.health <= 0) {
+            alert('YOU LOST');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -605,12 +687,12 @@ class App extends React.Component {
                 y: null,
               }
             }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+            player.x = null;
+            player.y = null;
+            player.health = 100;
+            player.attack = 5;
+            player.xp = 0;
+            player.level = 1;
             boss.health = 20000;
 
             this.setState({
@@ -651,8 +733,12 @@ class App extends React.Component {
         } else if (grid[player.y][player.x + 1] === 7) {
           boss.health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
           player.health -= Math.floor((Math.random() * boss.attack) + 20);
+          this.setState({
+            player,
+            boss
+          });
           if (boss.health <= 0) {
-            alert('you won');
+            alert('YOU WON');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -675,8 +761,9 @@ class App extends React.Component {
               gridArr: this.getEmptyGrid()
             });
             this.generateLevel();
-          } else if (player.health <= 0) {
-            alert('you lost');
+          }
+          if (player.health <= 0) {
+            alert('YOU LOST');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -685,12 +772,12 @@ class App extends React.Component {
                 y: null,
               }
             }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+            player.x = null;
+            player.y = null;
+            player.health = 100;
+            player.attack = 5;
+            player.xp = 0;
+            player.level = 1;
             boss.health = 20000;
 
             this.setState({
@@ -718,7 +805,7 @@ class App extends React.Component {
           grid[player.y + 1][player.x] = 5;
           grid[player.y][player.x] = 1;
           player.y = player.y + 1;
-          player.health += Math.floor((Math.random() * 15) + 8);
+          player.health += Math.floor((Math.random() * 15) + 5 + level);
           this.setState({
             gridArr: grid,
             player: player
@@ -731,7 +818,11 @@ class App extends React.Component {
             }
           }
           enemies[enemyNumber].health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * this.state.level);
+          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * level);
+          this.setState({
+            player,
+            enemies
+          });
           if (enemies[enemyNumber].health <= 0) {
             grid[player.y + 1][player.x] = 5;
             grid[player.y][player.x] = 1;
@@ -746,7 +837,9 @@ class App extends React.Component {
               player,
               enemies
             });
-          } else if (player.health <= 0) {
+          }
+          if (player.health <= 0) {
+            alert('YOU LOST');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -755,12 +848,12 @@ class App extends React.Component {
                 y: null,
               }
             }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+            player.x = null;
+            player.y = null;
+            player.health = 100;
+            player.attack = 5;
+            player.xp = 0;
+            player.level = 1;
             boss.health = 20000;
 
             this.setState({
@@ -801,8 +894,12 @@ class App extends React.Component {
         } else if (grid[player.y + 1][player.x] === 7) {
           boss.health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
           player.health -= Math.floor((Math.random() * boss.attack) + 20);
+          this.setState({
+            player,
+            boss
+          });
           if (boss.health <= 0) {
-            alert('you won');
+            alert('YOU WON');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -825,8 +922,9 @@ class App extends React.Component {
               gridArr: this.getEmptyGrid()
             });
             this.generateLevel();
-          } else if (player.health <= 0) {
-            alert('you lost');
+          }
+          if (player.health <= 0) {
+            alert('YOU LOST');
             for (let enemy in enemies) {
               enemies[enemy] = {
                 health: 100,
@@ -835,12 +933,12 @@ class App extends React.Component {
                 y: null,
               }
             }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+            player.x = null;
+            player.y = null;
+            player.health = 100;
+            player.attack = 5;
+            player.xp = 0;
+            player.level = 1;
             boss.health = 20000;
 
             this.setState({
@@ -874,11 +972,17 @@ class App extends React.Component {
     window.removeEventListener('keyup', this.keyPress.bind(this));
   }
   
+  handleClick(){
+    this.setState({
+      fog: !this.state.fog
+    });
+  }
+
   render(){
-    console.log(this.state.player, this.state.boss)
     return (
       <div className="wrapper">
-        <Display gridArr={this.state.gridArr} />
+        <Display gridArr={this.state.gridArr} fog={this.state.fog} player={this.state.player} />
+        <Table handleClick={this.handleClick.bind(this)} boss={this.state.boss} level={this.state.level} player={this.state.player} />
       </div>
     );
   }

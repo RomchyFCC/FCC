@@ -7,12 +7,17 @@
 body {
   height: 100vh;
   width: 100vw;
+  background: rgb(36, 36, 36);
+  padding: 20px 0;
 }
 .wrapper {
-  width: 100vw;
-  height: 100vh;
+  width: 80%;
   background: rgb(36, 36, 36);
   box-shadow: 0 0 50px 5px black;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0 auto;
 }
 
 .header {
@@ -26,11 +31,10 @@ body {
 }
 
 .grid {
-  height: 770px;
-  width: 895px;
+  height: 620px;
+  width: 720px;
   background: gray;
   padding: 10px;
-  margin: 0 auto;
 }
 
 .row {
@@ -39,12 +43,13 @@ body {
 }
 
 .cell {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
 }
 
 .player {
   background: yellow;
+  box-shadow: 0 0 20px 3px yellow;
 }
 
 .dead {
@@ -69,4 +74,38 @@ body {
 
 .weapon {
   background: white;
+}
+
+p > span {
+  display: inline-block;
+}
+
+p, div {
+  color: white;
+}
+
+.table {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  justify-content: center;
+  grid-gap: 20px;
+  padding: 20px;
+}
+.fog {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+button {
+  background: rgba(0, 140, 255, 0.753);
+  padding: 10px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgba(255, 123, 0, 0.3);
 }
