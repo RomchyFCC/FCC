@@ -7,7 +7,7 @@ Link to my [codepen](https://codepen.io/Romchy/)
 
 ---
 
-## [Rougelike dunegon crawler game](https://codepen.io/Romchy/full/xWBpQx/)
+## [Rougelike dungeon crawler game](https://codepen.io/Romchy/full/xWBpQx/)
 
 What a mess, it works but I'm not really proud of the product, I didn't keep it DRY.
 

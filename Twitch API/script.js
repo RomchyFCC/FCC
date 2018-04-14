@@ -26,24 +26,24 @@ for (let j = 0; j < channels.length; j++) {
   )
 }
 
-let dataArray = [];
-for (let i = 0; i < channels.length; i++) {
-  $.getJSON(curl+channels[i]+url2, data => {
-    dataArray.push(data);
-  })
-}
-
-setTimeout(() => {
-  dataArray.forEach((data, key)=> {
-        wrapper.append(`
-          <li id="id${key}"style="left:${(key+1)*5}%"><a href="${data.url}"><img src="${data.logo}" width="40" height="40">
-          <span class="name">${data.display_name}</span><span class="status">${data.status}</span></a></li>
-        `)
+const array = new Promise((resolve, reject) => {
+  let dataArray = [];
+  for (let i = 0; i < channels.length; i++) {
+    $.getJSON(curl+channels[i]+url2, data => {
+      dataArray.push(data);
+      if (dataArray.length >= channels.length) {
+        resolve(dataArray);
       }
-    )
-}, 500)
+    })
+  }
+}).then(dataArray => {
+  dataArray.forEach((data, key)=> {
+    wrapper.append(`
+      <li id="id${key}"style="left:${(key+1)*5}%"><a href="${data.url}"><img src="${data.logo}" width="40" height="40">
+      <span class="name">${data.display_name}</span><span class="status">${data.status}</span></a></li>
+    `)
+  })
 
-setTimeout(() => {
   let elements=$('li .name');
   for (let k = 0; k < elements.length; k++) {
     onlineArray.forEach(e => {
@@ -54,7 +54,7 @@ setTimeout(() => {
       }
     })
   }
-}, 500)
+})
 
 input.on('keypress', e => {
   if (e.key === 'Enter') {

@@ -129,7 +129,9 @@ sections.forEach(color => color.addEventListener('click', (e)=>{
       playerSequence.push(4);
       num = 4;
     }
-    const audio = document.querySelector(`audio[data-key="${num}"]`)
+
+    // audio not working properly, i suspect that amazonaws is limiting my usage
+    let audio = document.querySelector(`audio[data-key="${num}"]`);
     audio.currentTime = 0;
     audio.play();
     check();

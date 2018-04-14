@@ -211,9 +211,3 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
-
-/* 
-local storage,
-different way of getting the id of an element(to prevent from getting the wrong  identical item deleted)
-styling
-*/
