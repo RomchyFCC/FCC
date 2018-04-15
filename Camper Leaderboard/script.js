@@ -37,6 +37,8 @@ class App extends React.Component {
       data: []
     }
   }
+
+  // get data for last 30 days points
   getData(mode) {
     const last30 = new Promise ((resolve, reject) => {
       $.getJSON(`https://fcctop100.herokuapp.com/api/fccusers/top/${mode}`, data => {
@@ -51,6 +53,8 @@ class App extends React.Component {
       })
     })
   }
+
+  // get data about all time points or in the last 30 days
   handleClick(e) {
     if (e.target.innerHTML === 'Points all time') {
       this.getData('alltime')
@@ -59,6 +63,7 @@ class App extends React.Component {
     }
   }
   
+  // set the points for last 30 days
   componentWillMount() {
     this.getData(this.state.mode)
   }

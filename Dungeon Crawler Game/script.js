@@ -21,14 +21,9 @@ class Display extends React.Component {
     });
     return grid;
   }
-  getFog(fog, x, y) {
-    if (fog) {
-      return {background: `radial-gradient(circle at ${x*2.8}% ${y*3.3}%, rgba(250,250,250,0.3), rgba(0,0,0,1) 20%`};
-    }
-  }
   render() {
     return (
-      <div className="grid" style={this.getFog(this.props.fog, this.props.player.x, this.props.player.y)}>{this.grid()}</div>
+      <div className="grid">{this.grid()}</div>
     );
   }
 }
@@ -61,23 +56,27 @@ class Point extends React.Component {
       case 7:
         return 'boss';
         break;
+      case 8:
+        return 'foggy';
+        break;
       default:
         return '';
         break;
     }
   }
-  getFog(fog) {
-    if (fog && !(this.props.i <= this.props.player.y + 3 && this.props.i >= this.props.player.y - 3 && this.props.j <= this.props.player.x + 3 && this.props.j >= this.props.player.x - 3)) {
+  getFog(fog, fogLevel) {
+    if (fog && !(this.props.i <= this.props.player.y + fogLevel && this.props.i >= this.props.player.y - fogLevel && this.props.j <= this.props.player.x + fogLevel && this.props.j >= this.props.player.x - fogLevel)) {
       return {background: 'black'}
     }
   }
   render() {
     return (
-      <div className={`cell ${this.getClass(this.props.children)}`} style={this.getFog(this.props.fog)} ></div>
+      <div className={`cell ${this.getClass(this.props.children)}`} style={this.getFog(this.props.fog, this.props.player.fogLevel)} ></div>
     )
   }
 }
 
+// table of contents class with a legend on what each square represents
 class Table extends React.Component {
   render() {
     let weapon = '';
@@ -103,10 +102,12 @@ class Table extends React.Component {
           <p>Boss - <span className="cell boss"></span></p>
           <p>Portal - <span className="cell portal"></span></p>
           <p>Player - <span className="cell player"></span></p>
+          <p>Fog Extension - <span className="cell foggy"></span></p>
         </div>
         <div>Health: {this.props.player.health}</div>
         <div>Weapon: {weapon}</div>
         <div>Level: {this.props.player.level}</div>
+        <div>Fog Level: {this.props.player.fogLevel}</div>
         <div>XP: {this.props.player.xp}</div>
         <div>Dungeon: {this.props.level}</div>
         <div>{(this.props.level === 5) && `Boss: ${this.props.boss.health}`}</div>
@@ -127,7 +128,8 @@ class App extends React.Component {
         health: 100,
         attack: 5,
         xp: 0,
-        level: 1
+        level: 1,
+        fogLevel: 3,
       },
       enemies: {
         one: {
@@ -170,6 +172,7 @@ class App extends React.Component {
     };
   }
 
+  // a hard coded grid
   getEmptyGrid() {
     const grid = [
       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -202,10 +205,11 @@ class App extends React.Component {
       [0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
       [0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
     ];
     return grid;
   }
+
+  // function adds random spice to the hardcoded level
   getLevel() {
     const grid = this.state.gridArr;
     function addRandomRoom() {
@@ -221,9 +225,10 @@ class App extends React.Component {
     for (let k = 0; k < 400; k++) {
       addRandomRoom();
     }
-    
     return grid;
   }
+
+  // this function helps track each block that is important, like enemies and their health and player and their health
   generateBlocks(block) {
     let grid = this.state.gridArr;
     let i = Math.floor(Math.random() * 28) + 1;
@@ -266,6 +271,8 @@ class App extends React.Component {
       return grid;
     }
   }
+
+  // function for generating random environment
   generateEntities() {
     const grid = this.getLevel();
     // if last level generate a boss
@@ -294,8 +301,180 @@ class App extends React.Component {
     // generate weapon
     this.generateBlocks(6);
 
+    // generate fog extension pick-up
+    if (this.state.level !== 5) {
+      this.generateBlocks(8);
+    }
     return grid;
   }
+
+  // reset game
+  gameReset(player, enemies, boss) {
+    // reset enemies
+    for (let enemy in enemies) {
+      enemies[enemy] = {
+        health: 100,
+        attack: 10,
+        x: null,
+        y: null,
+      }
+    }
+
+    // reset player and boss
+    player.x = null;
+    player.y = null;
+    player.health = 100;
+    player.attack = 5;
+    player.xp = 0;
+    player.level = 1;
+    player.fogLevel = 3;
+    boss.health = 20000;
+
+    this.setState({
+      boss,
+      player,
+      enemies,
+      level: 1,
+      gridArr: this.getEmptyGrid()
+    });
+    this.generateLevel();
+  }
+
+  // go to the next level
+  nextLevel(player, enemies, level){
+    // reset enemies
+    for (let enemy in enemies) {
+      enemies[enemy] = {
+        health: 100,
+        attack: 10,
+        x: null,
+        y: null,
+      }
+    }
+
+    // add health
+    player.health += 50;
+    this.setState({
+      player,
+      enemies,
+      level: level + 1,
+      gridArr: this.getEmptyGrid()
+    });
+    this.generateLevel();
+  }
+
+  // fight enemy
+  fightEnemy(enemyNumber, player, enemies, grid, level, boss, direction) {
+    enemies[enemyNumber].health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
+    player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * level);
+    this.setState({
+      player,
+      enemies
+    });
+    
+    // check enemies health and move to it's place if dead
+    if (enemies[enemyNumber].health <= 0) {
+      if (direction === 'left') {
+        grid[player.y][player.x - 1] = 5;
+        grid[player.y][player.x] = 1;
+        player.x = player.x - 1;
+      } else if (direction === 'right') {
+        grid[player.y][player.x + 1] = 5;
+        grid[player.y][player.x] = 1;
+        player.x = player.x + 1;
+      } else if (direction === 'up') {
+        grid[player.y - 1][player.x] = 5;
+        grid[player.y][player.x] = 1;
+        player.y = player.y - 1;
+      } else if (direction === 'down') {
+        grid[player.y + 1][player.x] = 5;
+        grid[player.y][player.x] = 1;
+        player.y = player.y + 1;
+      } else {
+        return;
+      }
+
+      // add xp to the player if enemy defeated
+      player.xp += 10 * level;
+      if (player.xp >= 50) {
+        player.level++;
+        player.xp -= 50;
+      }
+
+      this.setState({
+        gridArr: grid,
+        player,
+        enemies
+      });
+    }
+
+    // reset game if player died
+    if (player.health <= 0) {
+      alert('YOU LOST');
+      this.gameReset(player, enemies, boss);
+    }
+  }
+
+  // fight the boss
+  fightBoss(boss, player, enemies, level) {
+    boss.health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
+    player.health -= Math.floor((Math.random() * boss.attack) + 20);
+    this.setState({
+      player,
+      boss
+    });
+
+    // reset the game if player won
+    if (boss.health <= 0) {
+      alert('YOU WON');
+      this.gameReset(player, enemies, boss);
+    }
+
+    // reset the game if player lost
+    if (player.health <= 0) {
+      alert('YOU LOST');
+      this.gameReset(player, enemies, boss);
+    }
+  }
+
+  // move player in a given direction and pick up a weapon or health if it's there
+  moveBlock(grid, player, level, direction, item) {
+    switch (direction) {
+      case 'left':
+        grid[player.y][player.x - 1] = 5;
+        grid[player.y][player.x] = 1;
+        player.x = player.x - 1;
+        break;
+      case 'right':
+        grid[player.y][player.x + 1] = 5;
+        grid[player.y][player.x] = 1;
+        player.x = player.x + 1;
+        break;
+      case 'up':
+        grid[player.y - 1][player.x] = 5;
+        grid[player.y][player.x] = 1;
+        player.y = player.y - 1;
+        break;
+      case 'down':
+        grid[player.y + 1][player.x] = 5;
+        grid[player.y][player.x] = 1;
+        player.y = player.y + 1;
+        break;
+    }
+    if (item === 'weapon') {
+      player.attack += 10 * level;
+    } else if (item === 'health') {
+      player.health += Math.floor((Math.random() * 15) + 5 + level);
+    } else if (item === 'fog') {
+      player.fogLevel++;
+    }
+    
+    this.setState({
+      gridArr: grid,
+      player
+    })
+  }
+
   keyPress(e) {
     const grid = this.state.gridArr;
     const player = this.state.player;
@@ -305,657 +484,159 @@ class App extends React.Component {
     switch(e.keyCode) {
       case 37:
         //move left
-        if (grid[player.y][player.x - 1] === 1) {
-          grid[player.y][player.x - 1] = 5;
-          grid[player.y][player.x] = 1;
-          player.x = player.x - 1;
-          this.setState({
-            gridArr: grid,
-            player
-          });
-          // pick up health left
-        } else if (grid[player.y][player.x - 1] === 2) {
-          grid[player.y][player.x - 1] = 5;
-          grid[player.y][player.x] = 1;
-          player.x = player.x - 1;
-          player.health += Math.floor((Math.random() * 15) + 5 + level);
-          this.setState({
-            gridArr: grid,
-            player
-          });
-          // fight left
-        } else if (grid[player.y][player.x - 1] === 3) {
+        // replace player block with blank and vice versa
+        let leftBlock = grid[player.y][player.x - 1];
+        if (leftBlock === 1) {
+          this.moveBlock(grid, player, level, 'left');
+
+          // pick up health
+        } else if (leftBlock === 2) {
+          this.moveBlock(grid, player, level, 'left', 'health');
+          
+          // fight enemy
+        } else if (leftBlock === 3) {
           let enemyNumber = '';
           for (let enemy in enemies) {
             if (enemies[enemy].x === player.x - 1 && enemies[enemy].y === player.y) {
               enemyNumber = enemy;
             }
           }
-          enemies[enemyNumber].health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * level);
-          this.setState({
-            player,
-            enemies
-          });
-          if (enemies[enemyNumber].health <= 0) {
-            grid[player.y][player.x - 1] = 5;
-            grid[player.y][player.x] = 1;
-            player.x = player.x - 1;
-            player.xp += 10 * level;
-            if (player.xp >= 50) {
-              player.level++;
-              player.xp -= 50;
-            }
-            this.setState({
-              gridArr: grid,
-              player,
-              enemies
-            });
-          }
-          if (player.health <= 0) {
-            alert('YOU LOST');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null;
-            player.y = null;
-            player.health = 100;
-            player.attack = 5;
-            player.xp = 0;
-            player.level = 1;
-            boss.health = 20000;
+          this.fightEnemy(enemyNumber, player, enemies, grid, level, boss, 'left');
+          
+          // go to next level
+        } else if (leftBlock === 4) {
+          this.nextLevel(player, enemies, level);
 
-            this.setState({
-              boss,
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
-          // go to next level left
-        } else if (grid[player.y][player.x - 1] === 4) {
-          for (let enemy in enemies) {
-            enemies[enemy] = {
-              health: 100,
-              attack: 10,
-              x: null,
-              y: null,
-            }
-          }
-          player.health += 50;
-          this.setState({
-            player,
-            enemies,
-            level: level + 1,
-            gridArr: this.getEmptyGrid()
-          });
-          this.generateLevel();
-          // pick up weapon left
-        } else if (grid[player.y][player.x - 1] === 6) {
-          player.attack += 10 * level;
-          grid[player.y][player.x - 1] = 5;
-          grid[player.y][player.x] = 1;
-          player.x = player.x - 1;
-          this.setState({
-            gridArr: grid,
-            player
-          })
-          // fight boss left
-        } else if (grid[player.y][player.x - 1] === 7) {
-          boss.health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * boss.attack) + 20);
-          this.setState({
-            player,
-            boss
-          });
-          if (boss.health <= 0) {
-            alert('YOU WON');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+          // pick up a weapon
+        } else if (leftBlock === 6) {
+          this.moveBlock(grid, player, level, 'left', 'weapon');
 
-            this.setState({
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
-          if (player.health <= 0) {
-            alert('YOU LOST');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null;
-            player.y = null;
-            player.health = 100;
-            player.attack = 5;
-            player.xp = 0;
-            player.level = 1;
-            boss.health = 20000;
+          // fight boss
+        } else if (leftBlock === 7) {
+          this.fightBoss(boss, player, enemies, level);
 
-            this.setState({
-              boss,
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
+          // pick up fog extension
+        } else if (leftBlock === 8) {
+          this.moveBlock(grid, player, level, 'left', 'fog');
         }
         break;
       case 38:
         //move up
-        if (grid[player.y - 1][player.x] === 1) {
-          grid[player.y - 1][player.x] = 5;
-          grid[player.y][player.x] = 1;
-          player.y = player.y - 1;
-          this.setState({
-            gridArr: grid,
-            player: player
-          })
-        } else if (grid[player.y - 1][player.x] === 2) {
-          grid[player.y - 1][player.x] = 5;
-          grid[player.y][player.x] = 1;
-          player.y = player.y - 1;
-          player.health += Math.floor((Math.random() * 15) + 5 + level);
-          this.setState({
-            gridArr: grid,
-            player: player
-          });
-        } else if (grid[player.y - 1][player.x] === 3) {
+        let upBlock = grid[player.y - 1][player.x];
+        if (upBlock === 1) {
+          this.moveBlock(grid, player, level, 'up');
+
+          // pick up health
+        } else if (upBlock === 2) {
+          this.moveBlock(grid, player, level, 'up', 'health');
+
+          // fight enemy
+        } else if (upBlock === 3) {
           let enemyNumber = '';
           for (let enemy in enemies) {
             if (enemies[enemy].x === player.x && enemies[enemy].y === player.y - 1) {
               enemyNumber = enemy;
             }
           }
-          enemies[enemyNumber].health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * level);
-          this.setState({
-            player,
-            enemies
-          });
-          if (enemies[enemyNumber].health <= 0) {
-            grid[player.y - 1][player.x] = 5;
-            grid[player.y][player.x] = 1;
-            player.y = player.y - 1;
-            player.xp += 10 * level;
-            if (player.xp >= 50) {
-              player.level++;
-              player.xp -= 50;
-            }
-            this.setState({
-              gridArr: grid,
-              player,
-              enemies
-            });
-          }
-          if (player.health <= 0) {
-            alert('YOU LOST');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null;
-            player.y = null;
-            player.health = 100;
-            player.attack = 5;
-            player.xp = 0;
-            player.level = 1;
-            boss.health = 20000;
+          this.fightEnemy(enemyNumber, player, enemies, grid, level, boss, 'up');
 
-            this.setState({
-              boss,
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
-        } else if (grid[player.y - 1][player.x] === 4) {
-          for (let enemy in enemies) {
-            enemies[enemy] = {
-              health: 100,
-              attack: 10,
-              x: null,
-              y: null,
-            }
-          }
-          player.health += 50;
-          this.setState({
-            player,
-            enemies,
-            level: level + 1,
-            gridArr: this.getEmptyGrid()
-          });
-          this.generateLevel();
-        } else if (grid[player.y - 1][player.x] === 6) {
-          player.attack += 10 * level;
-          grid[player.y - 1][player.x] = 5;
-          grid[player.y][player.x] = 1;
-          player.y = player.y - 1;
-          this.setState({
-            gridArr: grid,
-            player
-          })
-        } else if (grid[player.y - 1][player.x] === 7) {
-          boss.health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * boss.attack) + 20);
-          this.setState({
-            player,
-            boss
-          });
-          if (boss.health <= 0) {
-            alert('YOU WON');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+          // got to the next level
+        } else if (upBlock === 4) {
+          this.nextLevel(player, enemies, level);
 
-            this.setState({
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
-          if (player.health <= 0) {
-            alert('YOU LOST');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null;
-            player.y = null;
-            player.health = 100;
-            player.attack = 5;
-            player.xp = 0;
-            player.level = 1;
-            boss.health = 20000;
+          // pick up a weapon
+        } else if (upBlock === 6) {
+          this.moveBlock(grid, player, level, 'up', 'weapon');
 
-            this.setState({
-              boss,
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
+          // fight boss
+        } else if (upBlock === 7) {
+          this.fightBoss(boss, player, enemies, level);
+
+          // pick up fog extension
+        } else if (upBlock === 8) {
+          this.moveBlock(grid, player, level, 'up', 'fog');
         }
         break;
       case 39:
         //move right
-        if (grid[player.y][player.x + 1] === 1) {
-          grid[player.y][player.x + 1] = 5;
-          grid[player.y][player.x] = 1;
-          player.x = player.x + 1;
-          this.setState({
-            gridArr: grid,
-            player: player
-          })
-        } else if (grid[player.y][player.x + 1] === 2) {
-          grid[player.y][player.x + 1] = 5;
-          grid[player.y][player.x] = 1;
-          player.x = player.x + 1;
-          player.health += Math.floor((Math.random() * 15) + 5 + level);
-          this.setState({
-            gridArr: grid,
-            player: player
-          });
-        } else if (grid[player.y][player.x + 1] === 3) {
+        let rightBlock = grid[player.y][player.x + 1];
+        if (rightBlock === 1) {
+          this.moveBlock(grid, player, level, 'right');
+
+          // pick up health
+        } else if (rightBlock === 2) {
+          this.moveBlock(grid, player, level, 'right', 'health');
+
+          // fight enemy
+        } else if (rightBlock === 3) {
           let enemyNumber = '';
           for (let enemy in enemies) {
             if (enemies[enemy].x === player.x + 1 && enemies[enemy].y === player.y) {
               enemyNumber = enemy;
             }
           }
-          enemies[enemyNumber].health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * level);
-          this.setState({
-            player,
-            enemies
-          });
-          if (enemies[enemyNumber].health <= 0) {
-            grid[player.y][player.x + 1] = 5;
-            grid[player.y][player.x] = 1;
-            player.x = player.x + 1;
-            player.xp += 10 * level;
-            if (player.xp >= 50) {
-              player.level++;
-              player.xp -= 50;
-            }
-            this.setState({
-              gridArr: grid,
-              player,
-              enemies
-            });
-          }
-          if (player.health <= 0) {
-            alert('YOU LOST');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null;
-            player.y = null;
-            player.health = 100;
-            player.attack = 5;
-            player.xp = 0;
-            player.level = 1;
-            boss.health = 20000;
+          this.fightEnemy(enemyNumber, player, enemies, grid, level, boss, 'right');
 
-            this.setState({
-              boss,
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
-        } else if (grid[player.y][player.x + 1] === 4) {
-          for (let enemy in enemies) {
-            enemies[enemy] = {
-              health: 100,
-              attack: 10,
-              x: null,
-              y: null,
-            }
-          }
-          player.health += 50;
-          this.setState({
-            player,
-            enemies,
-            level: level + 1,
-            gridArr: this.getEmptyGrid()
-          });
-          this.generateLevel();
-        } else if (grid[player.y][player.x + 1] === 6) {
-          player.attack += 10 * level;
-          grid[player.y][player.x + 1] = 5;
-          grid[player.y][player.x] = 1;
-          player.x = player.x + 1;
-          this.setState({
-            gridArr: grid,
-            player
-          })
-        } else if (grid[player.y][player.x + 1] === 7) {
-          boss.health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * boss.attack) + 20);
-          this.setState({
-            player,
-            boss
-          });
-          if (boss.health <= 0) {
-            alert('YOU WON');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+          // move on to the next level
+        } else if (rightBlock === 4) {
+          this.nextLevel(player, enemies, level);
 
-            this.setState({
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
-          if (player.health <= 0) {
-            alert('YOU LOST');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null;
-            player.y = null;
-            player.health = 100;
-            player.attack = 5;
-            player.xp = 0;
-            player.level = 1;
-            boss.health = 20000;
+          // pick up weapon
+        } else if (rightBlock === 6) {
+          this.moveBlock(grid, player, level, 'right', 'weapon');
 
-            this.setState({
-              boss,
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
+          // fight boss
+        } else if (rightBlock === 7) {
+          this.fightBoss(boss, player, enemies, level);
+
+          // pick up fog extension
+        } else if (rightBlock === 8) {
+          this.moveBlock(grid, player, level, 'right', 'fog');
         }
         break;
       case 40:
         //move down
-        if (grid[player.y + 1][player.x] === 1) {
-          grid[player.y + 1][player.x] = 5;
-          grid[player.y][player.x] = 1;
-          player.y = player.y + 1;
-          this.setState({
-            gridArr: grid,
-            player: player
-          })
-        } else if (grid[player.y + 1][player.x] === 2) {
-          grid[player.y + 1][player.x] = 5;
-          grid[player.y][player.x] = 1;
-          player.y = player.y + 1;
-          player.health += Math.floor((Math.random() * 15) + 5 + level);
-          this.setState({
-            gridArr: grid,
-            player: player
-          });
-        } else if (grid[player.y + 1][player.x] === 3) {
+        let downBlock = grid[player.y + 1][player.x];
+        if (downBlock === 1) {
+          this.moveBlock(grid, player, level, 'down');
+
+          // pick up health
+        } else if (downBlock === 2) {
+          this.moveBlock(grid, player, level, 'down', 'health');
+
+          // fight enemy
+        } else if (downBlock === 3) {
           let enemyNumber = '';
           for (let enemy in enemies) {
             if (enemies[enemy].x === player.x && enemies[enemy].y === player.y + 1) {
               enemyNumber = enemy;
             }
           }
-          enemies[enemyNumber].health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * enemies[enemyNumber].attack * level) + 2 * level);
-          this.setState({
-            player,
-            enemies
-          });
-          if (enemies[enemyNumber].health <= 0) {
-            grid[player.y + 1][player.x] = 5;
-            grid[player.y][player.x] = 1;
-            player.y = player.y + 1;
-            player.xp += 10 * level;
-            if (player.xp >= 50) {
-              player.level++;
-              player.xp -= 50;
-            }
-            this.setState({
-              gridArr: grid,
-              player,
-              enemies
-            });
-          }
-          if (player.health <= 0) {
-            alert('YOU LOST');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null;
-            player.y = null;
-            player.health = 100;
-            player.attack = 5;
-            player.xp = 0;
-            player.level = 1;
-            boss.health = 20000;
+          this.fightEnemy(enemyNumber, player, enemies, grid, level, boss, 'down');
 
-            this.setState({
-              boss,
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
-        } else if (grid[player.y + 1][player.x] === 4) {
-          for (let enemy in enemies) {
-            enemies[enemy] = {
-              health: 100,
-              attack: 10,
-              x: null,
-              y: null,
-            }
-          }
-          player.health += 50;
-          this.setState({
-            player,
-            enemies,
-            level: level + 1,
-            gridArr: this.getEmptyGrid()
-          });
-          this.generateLevel();
-        } else if (grid[player.y + 1][player.x] === 6) {
-          player.attack += 10 * level;
-          grid[player.y + 1][player.x] = 5;
-          grid[player.y][player.x] = 1;
-          player.y = player.y + 1;
-          this.setState({
-            gridArr: grid,
-            player
-          })
-        } else if (grid[player.y + 1][player.x] === 7) {
-          boss.health -= Math.floor((Math.random() * player.attack * level * player.level) + 7);
-          player.health -= Math.floor((Math.random() * boss.attack) + 20);
-          this.setState({
-            player,
-            boss
-          });
-          if (boss.health <= 0) {
-            alert('YOU WON');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null
-            player.y = null
-            player.health = 100
-            player.attack = 5
-            player.xp = 0
-            player.level = 1
+          // move on to the next level
+        } else if (downBlock === 4) {
+          this.nextLevel(player, enemies, level);
+          
+          // pick up weapon
+        } else if (downBlock === 6) {
+          this.moveBlock(grid, player, level, 'down', 'weapon');
 
-            this.setState({
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
-          if (player.health <= 0) {
-            alert('YOU LOST');
-            for (let enemy in enemies) {
-              enemies[enemy] = {
-                health: 100,
-                attack: 10,
-                x: null,
-                y: null,
-              }
-            }
-            player.x = null;
-            player.y = null;
-            player.health = 100;
-            player.attack = 5;
-            player.xp = 0;
-            player.level = 1;
-            boss.health = 20000;
+          // fight boss
+        } else if (downBlock === 7) {
+          this.fightBoss(boss, player, enemies, level);
 
-            this.setState({
-              boss,
-              player,
-              enemies,
-              level: 1,
-              gridArr: this.getEmptyGrid()
-            });
-            this.generateLevel();
-          }
+          // pick up for extension
+        } else if (downBlock === 8) {
+          this.moveBlock(grid, player, level, 'down', 'fog');
         }
         break;
       default: 
         return;
     }
   }
+
+  // function for generating random enemies and their position
   generateLevel() {
     const grid = this.generateEntities();;
     this.setState({
@@ -963,6 +644,7 @@ class App extends React.Component {
     })
   }
   
+  // adds level generation and event listener for the game
   componentWillMount() {
     this.generateLevel();
     window.addEventListener('keyup', this.keyPress.bind(this));
@@ -972,6 +654,7 @@ class App extends React.Component {
     window.removeEventListener('keyup', this.keyPress.bind(this));
   }
   
+  // controls the appearance of the fog
   handleClick(){
     this.setState({
       fog: !this.state.fog
@@ -981,8 +664,17 @@ class App extends React.Component {
   render(){
     return (
       <div className="wrapper">
-        <Display gridArr={this.state.gridArr} fog={this.state.fog} player={this.state.player} />
-        <Table handleClick={this.handleClick.bind(this)} boss={this.state.boss} level={this.state.level} player={this.state.player} />
+        <Display 
+          gridArr={this.state.gridArr} 
+          fog={this.state.fog} 
+          player={this.state.player} 
+        />
+        <Table 
+          handleClick={this.handleClick.bind(this)} 
+          boss={this.state.boss} 
+          level={this.state.level} 
+          player={this.state.player} 
+        />
       </div>
     );
   }
