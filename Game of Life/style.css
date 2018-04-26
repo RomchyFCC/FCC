@@ -4,10 +4,15 @@
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+body {
+  background: linear-gradient(90deg, rgb(30,0,0), red, rgb(30,0,0));
+  height: 100vh;
+  padding: 50px;
+}
 
 .wrapper {
-  width: 800px;
-  height: 600px;
+  width: 600px;
+  height: 450px;
   margin: 0 auto;
   background: #eee;
   box-shadow: 0 0 50px 5px black;
@@ -34,7 +39,7 @@
 }
 .grid {
   height: 320px;
-  width: 520px;
+  width: 420px;
   background: gray;
   padding: 10px;
   margin: 15px auto;

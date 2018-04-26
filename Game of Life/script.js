@@ -46,7 +46,7 @@ class Buttons extends React.Component {
 class Point extends React.Component {
   render() {
     return (
-      <div onClick={this.props.handleClick} className={this.props.children ? 'cell alive' : 'cell dead'}><p className="cellId">{this.props.i}</p><p className="cellId">{this.props.j}</p></div>
+      <div onClick={() => this.props.handleClick(this.props.i, this.props.j)} className={this.props.children ? 'cell alive' : 'cell dead'}></div>
     )
   }
 }
@@ -68,7 +68,7 @@ class App extends React.Component {
     let grid = [];
     for (let i = 0; i < 30; i++) {
       let row = [];
-      for(let j = 0; j < 50; j++) {
+      for(let j = 0; j < 40; j++) {
         row.push(0);
       }
       grid.push(row);
@@ -80,7 +80,7 @@ class App extends React.Component {
     let grid = [];
     for (let i = 0; i < 30; i++) {
       let row = [];
-      for(let j = 0; j < 50; j++) {
+      for(let j = 0; j < 40; j++) {
         row.push(Math.floor(Math.random() * 2));
       }
       grid.push(row);
@@ -92,7 +92,7 @@ class App extends React.Component {
     let grid = [];
     for (let i = 0; i < 30; i++) {
       let row = [];
-      for (let j = 0; j < 50; j++) {
+      for (let j = 0; j < 40; j++) {
         row.push(this.nextCell(this.state.gridArr, i, j) ? 1 : 0);
       }
       grid.push(row);
@@ -106,7 +106,7 @@ class App extends React.Component {
     
     function getNeighborCount(gridArr, i, j) {
       let neighbours = 0;
-      let rowLength = 50;
+      let rowLength = 40;
       let columnHeight = 30;
 
       if (gridArr[mod(i+1, columnHeight)][j]) neighbours++;
@@ -127,9 +127,7 @@ class App extends React.Component {
     }
   }
 
-  toggleCell(e) {
-    let i = parseInt(e.target.firstChild.innerHTML);
-    let j = parseInt(e.target.lastChild.innerHTML);
+  toggleCell(i, j) {
     let grid = this.state.gridArr;
     grid[i][j] = grid[i][j] ? 0 : 1;
     this.setState({
